@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.camunda.fox</groupId>
+	<artifactId>activiti-cdi-example-travelexpenses</artifactId>
+	<packaging>war</packaging>
+	<name>Activiti CDI Integration - Example</name>
+	<version>1.0-SNAPSHOT</version>
+
+
+	<parent>
+		<groupId>com.camunda.fox</groupId>
+		<artifactId>activiti-cdi-parent</artifactId>
+		<version>1.0-SNAPSHOT</version>
+		<relativePath>../activiti-cdi-parent</relativePath>
+	</parent>
+
+
+	<dependencies>
+
+		<dependency>
+			<groupId>com.camunda.fox</groupId>
+			<artifactId>activiti-cdi</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>6.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+
+		<!-- Used by activiti engine for the moment -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.2.144</version>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<finalName>activiti-cdi-example-travelexpenses</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+			<resource>
+				<directory>src/main/bpmn</directory>
+			</resource>
+		</resources>
+		<plugins>
+			<!-- Facilitates downloading source and javadoc in Eclipse -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.8</version>
+				<configuration>
+					<wtpversion>2.0</wtpversion>
+					<downloadSources>true</downloadSources>
+					<downloadJavadocs>true</downloadJavadocs>
+				</configuration>
+			</plugin>
+
+
+
+			<!-- Ensures we are compiling at 1.6 level -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
+</project>

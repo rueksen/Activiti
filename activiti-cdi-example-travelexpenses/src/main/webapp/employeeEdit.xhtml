@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/template.xhtml">
+	<ui:define name="content">
+		<f:metadata>
+			<f:viewParam name="id" value="#{employeeHome.id}" />
+			<f:event type="preRenderView"
+				listener="#{employeeHome.initConversation}" />
+		</f:metadata>
+		<h1>Create new Employee:</h1>
+		<h:form>
+			<h:outputText value="ID" styleClass="caption"
+				rendered="#{employeeHome.managed}" />
+			<h:outputText value="#{employeeHome.instance.id}" styleClass="value"
+				rendered="#{employeeHome.managed}" />
+
+			<h:outputText value="Firstname" styleClass="caption" />
+			<h:inputText value="#{employeeHome.instance.firstName}"
+				styleClass="value" />
+				<br />
+
+			<h:outputText value="Lastname" styleClass="caption" />
+			<h:inputText value="#{employeeHome.instance.lastName}"
+				styleClass="value" />
+
+			<h:commandButton value="Save" action="#{employeeHome.save}"
+				style="margin-right : 8px" />
+			<h:commandButton value="Cancel" action="#{employeeHome.cancel}"
+				immediate="true" style="margin-right : 8px" />
+		</h:form>
+	</ui:define>
+
+</ui:composition>

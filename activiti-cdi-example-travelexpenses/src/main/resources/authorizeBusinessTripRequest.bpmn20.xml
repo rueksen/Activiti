@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions id="taskAssigneeExample"
+	xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" 
+	xmlns:activiti="http://activiti.org/bpmn"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	targetNamespace="Examples">
+
+	<!-- 
+	@Requires String employee	
+				the actor-id of the employee submitting the request
+	@Requires BusinessTripRequest businessTripRequest
+				the businessTripRequest object submitted by the employee
+	-->
+
+	<process name="authorizeBusinessTripRequest">
+
+		<startEvent id="startEvent" name="Business Trip Request Submitted"></startEvent>
+		<sequenceFlow targetRef="authorizeBusinessTrip" sourceRef="startEvent"></sequenceFlow>
+
+		<!--
+			@Produces Boolean authorized
+						true if the manager authorizes the request
+			@Produces AuthorizationMessage authorizationMessage
+						a message from the manager for the employee			
+ 		-->
+		<userTask id="authorizeBusinessTrip" name="Authorize Business Trip">		
+			<humanPerformer>
+				<resourceAssignmentExpression>
+					<formalExpression>#{businessTripAuthorizationService.getAuthorizingManager()}</formalExpression>
+				</resourceAssignmentExpression>
+			</humanPerformer>
+		</userTask>
+		<sequenceFlow targetRef="gw" sourceRef="authorizeBusinessTrip"></sequenceFlow>
+		
+
+		<exclusiveGateway id="gw" name="authorized?" />
+	<!-- 	<sequenceFlow targetRef="tripApproved" sourceRef="gw">
+			<conditionExpression xsi:type="tFormalExpression">#{authorized}</conditionExpression>			
+		</sequenceFlow>
+		<sequenceFlow targetRef="tripApproved" sourceRef="gw">
+			<conditionExpression xsi:type="tFormalExpression">#{!authorized}</conditionExpression>			
+		</sequenceFlow> -->
+					
+	
+					
+				<!-- 
+		<serviceTask id="businessTripServiceCallAuthorized" name="Book absent time"
+			activiti:expression="#{businessTripService.tripAuthorized}">
+		</serviceTask>
+		<sequenceFlow targetRef="authorized" sourceRef="authorizeBusinessTrip"></sequenceFlow>
+		
+		<serviceTask id="businessTripServiceCallNotAuthorized" name="not authorized"
+			activiti:expression="#{businessTripService.tripNotAuthorized}">
+		</serviceTask>
+		<sequenceFlow targetRef="authorized" sourceRef="authorizeBusinessTrip"></sequenceFlow>
+		
+	
+		-->
+
+		<endEvent id="authorized" name="Authorized"></endEvent>
+		<endEvent id="rejected" name="Rejected"></endEvent>
+
+
+	</process>
+
+</definitions>

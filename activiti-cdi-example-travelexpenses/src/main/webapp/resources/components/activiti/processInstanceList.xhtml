@@ -1,0 +1,40 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+
+<!-- interface -->
+
+<composite:interface>
+
+</composite:interface>
+
+<!-- implementation -->
+<composite:implementation>
+	<h:dataTable value="#{processInstanceList.list}" var="v_instance">
+		<h:column>
+			<f:facet name="header">Process Name</f:facet>
+			#{processInstanceList.getProcessDefinitionName(v_instance.processDefinitionId)}
+		</h:column>
+		<h:column>
+			<f:facet name="header">Variables</f:facet>
+			<h:dataTable
+				value="#{processInstanceList.getVariables(v_instance.id)}"
+				var="v_variable">
+				<h:column>
+					<f:facet name="header">Key</f:facet>
+					#{v_variable}
+				</h:column>
+				<h:column>
+					<f:facet name="header">Value</f:facet>
+					#{processInstanceList.getProcessVariableValue(v_instance.id,v_variable)}
+				</h:column>
+			</h:dataTable>
+
+		</h:column>
+	</h:dataTable>
+</composite:implementation>
+
+
+</html>
