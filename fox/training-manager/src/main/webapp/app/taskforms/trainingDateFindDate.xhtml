@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/template.xhtml">	
+	<ui:define name="content">
+	
+	<f:metadata>
+		<f:viewParam name="taskId" />
+		<f:event type="preRenderView" listener="#{businessProcess.startTask(taskId, true)}" />             
+    </f:metadata>
+	
+	<h2>
+		#{task.name} 
+	</h2>
+
+	<h:form>
+		<table>
+				<tr>
+					<td style="font-weight: bold;">Trainer's comment:</td>
+					<td colspan="2">
+						#{newTrainingDate.comment}						
+					</td>
+				</tr>
+				<tr>
+					<td style="font-weight: bold;">Start date:</td>
+					<td>
+						<h:inputText id="startDate" value="#{newTrainingDate.startDate}" styleClass="datePicker">
+							<f:convertDateTime pattern="mm/dd/yyyy" />
+						</h:inputText>
+					</td>
+					<td><h:message id="startDateMessage" for="startDate" errorClass="invalid" /></td>
+				</tr>
+				<tr>
+					<td style="font-weight: bold;">End date:</td>
+					<td>
+						<h:inputText id="endDate" value="#{newTrainingDate.endDate}" styleClass="datePicker">
+							<f:convertDateTime pattern="mm/dd/yyyy" />
+						</h:inputText>
+					</td>
+					<td><h:message id="endDateMessage" for="endDate" errorClass="invalid" /></td>
+				</tr>										
+				<tr>
+					<td>
+						<h:commandLink action="trainingDateFindLocation" value="Proceed" type="submit" />					
+					</td>
+				</tr>
+		</table>
+	</h:form>
+
+	</ui:define>
+</ui:composition>

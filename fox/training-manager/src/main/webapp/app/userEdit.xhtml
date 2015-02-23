@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/template.xhtml">	
+	<ui:define name="content">
+	
+	
+	<a href="userList.jsf">User list</a> 
+	
+	<h2>
+		<h:outputText value="Create a new User" rendered="#{userController.transient}" />
+		<h:outputText value="Edit User" rendered="#{not userController.transient}" />		
+	</h2>
+			
+	<h:form>
+		<table>
+				<ui:include src="/WEB-INF/templates/formEntry.xhtml">
+					<ui:param name="label" value="Email" />
+					<ui:param name="id" value="email" />
+					<ui:param name="property" value="#{userController.instance.email}" />
+				</ui:include>
+				<ui:include src="/WEB-INF/templates/formEntry.xhtml">
+					<ui:param name="label" value="Firstname" />
+					<ui:param name="id" value="firstname" />
+					<ui:param name="property" value="#{userController.instance.firstname}" />
+				</ui:include>
+				<ui:include src="/WEB-INF/templates/formEntry.xhtml">
+					<ui:param name="label" value="Lastname" />
+					<ui:param name="id" value="lastname" />
+					<ui:param name="property" value="#{userController.instance.lastname}" />
+				</ui:include>
+				<ui:include src="/WEB-INF/templates/formEntry.xhtml">
+					<ui:param name="label" value="Password" />
+					<ui:param name="id" value="password" />
+					<ui:param name="property" value="#{userController.instance.password}" />
+				</ui:include>			
+				<tr>
+					<td><h:commandButton action="#{userService.saveUser()}" 
+							value="save" type="submit" />
+					</td>
+				</tr>
+			</table>		
+	</h:form>
+
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/template.xhtml">	
+	<ui:define name="content">	
+	
+	<a href="userEdit.jsf">Create new user</a> 
+	
+	<h2>List of users</h2>	
+	<h:form>
+		
+		<h:dataTable value="#{userListController.list}" var="user" id="list" cellspacing="0" rowClasses="odd, even" styleClass="datatable">
+			<ui:include src="/WEB-INF/templates/listColumn.xhtml">
+				<ui:param name="listBean" value="${userListController}" />
+				<ui:param name="item" value="${user}" />
+				<ui:param name="property" value="id" />
+				<ui:param name="label" value="Id" />
+			</ui:include>
+			<ui:include src="/WEB-INF/templates/listColumn.xhtml">
+				<ui:param name="listBean" value="${userListController}" />
+				<ui:param name="item" value="${user}" />
+				<ui:param name="property" value="email" />
+				<ui:param name="label" value="Email" />
+			</ui:include>	
+			<ui:include src="/WEB-INF/templates/listColumn.xhtml">
+				<ui:param name="listBean" value="${userListController}" />
+				<ui:param name="item" value="${user}" />
+				<ui:param name="property" value="firstname" />
+				<ui:param name="label" value="Firstname" />
+			</ui:include>	
+			<ui:include src="/WEB-INF/templates/listColumn.xhtml">
+				<ui:param name="listBean" value="${userListController}" />
+				<ui:param name="item" value="${user}" />
+				<ui:param name="property" value="lastname" />
+				<ui:param name="label" value="Lastname" />
+			</ui:include>	
+			<h:column>
+				<f:facet name="header">Options</f:facet>
+				<h:commandLink value="delete" action="#{userService.deleteUser(user)}">
+					<f:ajax render="@form" />
+				</h:commandLink>
+			</h:column>
+			<f:facet name="footer">
+				<ui:include src="/WEB-INF/templates/listPagination.xhtml">
+					<ui:param name="listBean" value="${userListController}" />
+				</ui:include>
+			</f:facet>
+
+		</h:dataTable>
+	</h:form>
+	</ui:define>
+</ui:composition>

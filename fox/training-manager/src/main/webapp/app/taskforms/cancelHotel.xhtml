@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/template.xhtml">	
+	<ui:define name="content">
+
+	<f:metadata>
+		<f:viewParam name="taskId" />			
+		<f:event type="preRenderView" listener="#{businessProcess.startTask(taskId, true)}" />            
+   	</f:metadata>
+	
+	<h2>
+		#{task.name} 
+	</h2>
+	
+	Please cancel your reservations for the following training date:
+
+	<h:form>
+			
+		<table>
+				<tr>
+					<td>Start date:</td>
+					<td>
+						#{trainingDateCancel.trainingDate.startDate}
+					</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>End date:</td>
+					<td>
+						#{trainingDateCancel.trainingDate.endDate}
+					</td>
+					<td></td>
+				</tr>			
+				<tr>
+					<td>Location:</td>
+					<td>
+						#{trainingDateCancel.trainingDate.location}"
+					</td>
+					<td></td>
+				</tr>							
+				<tr>
+					<td><h:commandButton action="#{businessProcess.completeTask(true)}" 
+							value="save" type="submit" />
+					</td>
+				</tr>
+		</table>
+	</h:form>
+
+	</ui:define>
+</ui:composition>

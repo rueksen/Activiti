@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<definitions id="Definition"
+             targetNamespace="http://www.jboss.org/drools"
+             typeLanguage="http://www.java.com/javaTypes"
+             expressionLanguage="http://www.mvel.org/2.0"
+             xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd"
+             xmlns:g="http://www.jboss.org/drools/flow/gpd"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:tns="http://www.jboss.org/drools">
+
+  <itemDefinition id="_TweetItem" structureRef="String" />
+  <itemDefinition id="_EmailItem" structureRef="String" />
+  <itemDefinition id="_approvedItem" structureRef="Boolean" />
+
+  <process processType="Private" isExecutable="true" id="TwitterDemoProcess" name="Twitter Review Process" >
+
+    <!-- process variables -->
+    <property id="Tweet" itemSubjectRef="_TweetItem"/>
+    <property id="Email" itemSubjectRef="_EmailItem"/>
+    <property id="approved" itemSubjectRef="_approvedItem"/>
+
+    <!-- nodes -->
+    <startEvent id="_1" name="StartProcess" />
+    <endEvent id="_3" name="EndProcess" >
+        <terminateEventDefinition/>
+    </endEvent>
+    <task id="_4" name="Publish Tweet" tns:taskName="publish-tweet" >
+      <ioSpecification>
+        <dataInput id="_4_EmailInput" name="Email" />
+        <dataInput id="_4_TweetInput" name="Tweet" />
+        <inputSet>
+          <dataInputRefs>_4_EmailInput</dataInputRefs>
+          <dataInputRefs>_4_TweetInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>Email</sourceRef>
+        <targetRef>_4_EmailInput</targetRef>
+      </dataInputAssociation>
+      <dataInputAssociation>
+        <sourceRef>Tweet</sourceRef>
+        <targetRef>_4_TweetInput</targetRef>
+      </dataInputAssociation>
+    </task>
+    <task id="_5" name="Send Rejection" tns:taskName="Notification" >
+      <ioSpecification>
+        <dataInput id="_5_EmailInput" name="Email" />
+        <inputSet>
+          <dataInputRefs>_5_EmailInput</dataInputRefs>
+        </inputSet>
+        <outputSet>
+        </outputSet>
+      </ioSpecification>
+      <dataInputAssociation>
+        <sourceRef>Email</sourceRef>
+        <targetRef>_5_EmailInput</targetRef>
+      </dataInputAssociation>
+    </task>
+    <userTask id="_6" name="Review Tweet" >
+      <ioSpecification>
+        <dataOutput id="_6_approvedOutput" name="approved" />
+        <inputSet>
+        </inputSet>
+        <outputSet>
+          <dataOutputRefs>_6_approvedOutput</dataOutputRefs>
+        </outputSet>
+      </ioSpecification>
+      <dataOutputAssociation>
+        <sourceRef>_6_approvedOutput</sourceRef>
+        <targetRef>approved</targetRef>
+      </dataOutputAssociation>
+    </userTask>
+    <exclusiveGateway id="_7" name="Gateway" gatewayDirection="Diverging" />
+    <exclusiveGateway id="_8" name="Gateway" gatewayDirection="Converging" />
+
+    <!-- connections -->
+    <sequenceFlow id="_8-_3" sourceRef="_8" targetRef="_3" />
+    <sequenceFlow id="_7-_4" sourceRef="_7" targetRef="_4" name="tweet is approved" >
+      <conditionExpression xsi:type="tFormalExpression" >return approved;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_7-_5" sourceRef="_7" targetRef="_5" name="tweet is rejected" >
+      <conditionExpression xsi:type="tFormalExpression" >return !approved;</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="_1-_6" sourceRef="_1" targetRef="_6" />
+    <sequenceFlow id="_6-_7" sourceRef="_6" targetRef="_7" />
+    <sequenceFlow id="_4-_8" sourceRef="_4" targetRef="_8" />
+    <sequenceFlow id="_5-_8" sourceRef="_5" targetRef="_8" />
+
+  </process>
+
+  <bpmndi:BPMNDiagram>
+    <bpmndi:BPMNPlane bpmnElement="TwitterDemoProcess" >
+      <bpmndi:BPMNShape bpmnElement="_1" >
+        <dc:Bounds x="27" y="101" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_3" >
+        <dc:Bounds x="700" y="105" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_4" >
+        <dc:Bounds x="414" y="26" width="148" height="68" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_5" >
+        <dc:Bounds x="411" y="156" width="151" height="69" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_6" >
+        <dc:Bounds x="109" y="90" width="149" height="68" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_7" >
+        <dc:Bounds x="310" y="100" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="_8" >
+        <dc:Bounds x="612" y="104" width="48" height="48" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="_8-_3" >
+        <di:waypoint x="636" y="128" />
+        <di:waypoint x="724" y="129" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_7-_4" >
+        <di:waypoint x="334" y="124" />
+        <di:waypoint x="488" y="60" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_7-_5" >
+        <di:waypoint x="334" y="124" />
+        <di:waypoint x="486" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_1-_6" >
+        <di:waypoint x="51" y="125" />
+        <di:waypoint x="183" y="124" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_6-_7" >
+        <di:waypoint x="183" y="124" />
+        <di:waypoint x="334" y="124" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_4-_8" >
+        <di:waypoint x="488" y="60" />
+        <di:waypoint x="636" y="128" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="_5-_8" >
+        <di:waypoint x="486" y="190" />
+        <di:waypoint x="636" y="128" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</definitions>

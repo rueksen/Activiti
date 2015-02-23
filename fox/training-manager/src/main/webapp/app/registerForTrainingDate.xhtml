@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/template.xhtml">	
+	<ui:define name="content">
+	
+	<f:metadata>
+            <f:viewParam id="id" name="trainingDateId" value="#{registrationCreate.trainingDateId}"  />       
+    </f:metadata>
+	
+	<h2>
+		Register for training date
+	</h2>
+
+	<h:form>
+		<table>
+				<tr>
+					<td style="font-weight: bold;">Firstname:</td>
+					<td>
+						<h:inputText id="firstname" value="#{newRegistration.attendee.firstname}">							
+						</h:inputText>
+					</td>
+					<td><h:message id="firstnameMessage" for="firstname" errorClass="invalid" /></td>
+				</tr>
+				<tr>
+					<td style="font-weight: bold;">Lastname:</td>
+					<td>
+						<h:inputText id="lastname" value="#{newRegistration.attendee.lastname}">							
+						</h:inputText>
+					</td>
+					<td><h:message id="lastnameMessage" for="lastname" errorClass="invalid" /></td>
+				</tr>
+				<tr>
+					<td style="font-weight: bold;">Email:</td>
+					<td>
+						<h:inputText id="email" value="#{newRegistration.attendee.email}">							
+						</h:inputText>
+					</td>
+					<td><h:message id="emailMessage" for="email" errorClass="invalid" /></td>
+				</tr>				
+				<tr>
+					<td><h:commandButton action="#{registrationCreate.register()}" 
+							value="save" type="submit" />
+					</td>
+				</tr>
+			</table>		
+	</h:form>
+
+	</ui:define>
+</ui:composition>

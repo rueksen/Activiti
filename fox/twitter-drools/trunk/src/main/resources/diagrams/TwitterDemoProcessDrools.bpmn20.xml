@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" targetNamespace="http://www.signavio.com/bpmn20">
+  <process id="TwitterDemoProcessDrools" name="TwitterDemoProcessDrools">
+    
+    <startEvent id="new_tweet_3" activiti:initiator="initiator" name="Start">
+      <extensionElements>
+        <activiti:formProperty id="email" name="email" readable="true" required="true" type="string" writable="true"/>
+        <activiti:formProperty id="content" name="content" readable="true" required="true" type="string" writable="true"/>
+      </extensionElements>
+    </startEvent>
+    
+    <serviceTask id="Review_Tweet_3" name="Review Tweet" activiti:class="com.camunda.fox.demo.twitter.DroolsDelegate">
+      	<extensionElements>
+      		<activiti:field name="drlFile" stringValue="rejectionRules.drl" />
+      		<activiti:field name="facts" stringValue="tweet" />
+      	</extensionElements>
+    </serviceTask>      
+    <exclusiveGateway id="Approved__3" name="Approved?" />
+
+    <serviceTask id="Publish_on_Twitter_3" activiti:class="com.camunda.fox.demo.twitter.TweetDelegate" name="Publish on Twitter" />
+
+    <serviceTask id="Send_rejection_notification_via_email__3" activiti:type="mail" name="Send rejection notification via email">
+      <extensionElements>
+        <activiti:field expression="${email}" name="to"/>
+        <activiti:field expression="activiti@camunda.com" name="from"/>
+        <activiti:field expression="Your tweet has been rejected" name="subject"/>
+        <activiti:field name="html">
+          <activiti:expression>&lt;html>
+&lt;body>
+Hi!&lt;br/>&lt;br/>
+
+Unfortuntaley your tweet has been rejected.&lt;br />&lt;br/>
+
+Original content: ${tweet.content}&lt;br />&lt;br/>
+
+Comment: ${tweet.rejectionComment}&lt;br />&lt;br/>
+
+Sorry, please try with better content the next time :-)
+&lt;/body></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+      <incoming>no</incoming>
+      <outgoing>SequenceFlow_4</outgoing>
+    </serviceTask>
+    <exclusiveGateway id="Exclusive_Databased_Gateway_3" name="Join">
+      <incoming>SequenceFlow_3</incoming>
+      <incoming>SequenceFlow_4</incoming>
+      <outgoing>SequenceFlow_5</outgoing>
+    </exclusiveGateway>
+    <endEvent id="EndNoneEvent_3" name="End">
+      <incoming>SequenceFlow_5</incoming>
+    </endEvent>
+    <sequenceFlow id="SequenceFlow_2" name="" sourceRef="new_tweet_3" targetRef="Review_Tweet_3">
+       	<extensionElements>
+           <activiti:executionListener event="take" class="com.camunda.fox.demo.twitter.CreateTweetObjectDelegate"/>
+        </extensionElements>     
+    </sequenceFlow>
+    <sequenceFlow id="SequenceFlow" name="" sourceRef="Review_Tweet_3" targetRef="Approved__3"/>
+    <sequenceFlow id="SequenceFlow_3" name="" sourceRef="Publish_on_Twitter_3" targetRef="Exclusive_Databased_Gateway_3"/>
+    <sequenceFlow id="SequenceFlow_4" name="" sourceRef="Send_rejection_notification_via_email__3" targetRef="Exclusive_Databased_Gateway_3"/>
+    <sequenceFlow id="SequenceFlow_5" name="" sourceRef="Exclusive_Databased_Gateway_3" targetRef="EndNoneEvent_3"/>
+    <sequenceFlow id="no" name="" sourceRef="Approved__3" targetRef="Send_rejection_notification_via_email__3">
+      <conditionExpression>#{!tweet.approved}</conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="yes" name="" sourceRef="Approved__3" targetRef="Publish_on_Twitter_3">
+      <conditionExpression>#{tweet.approved}</conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_TwitterDemoProcess">
+    <bpmndi:BPMNPlane id="BPMNPlane_TwitterDemoProcess" bpmnElement="TwitterDemoProcessDrools">
+      <bpmndi:BPMNShape id="BPMNShape_new_tweet_3" bpmnElement="new_tweet_3">
+        <omgdc:Bounds height="30.0" width="30.0" x="180.0" y="380.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Review_Tweet_3" bpmnElement="Review_Tweet_3">
+        <omgdc:Bounds height="80.0" width="100.0" x="285.0" y="355.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Approved__3" bpmnElement="Approved__3">
+        <omgdc:Bounds height="40.0" width="40.0" x="435.0" y="375.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Publish_on_Twitter_3" bpmnElement="Publish_on_Twitter_3">
+        <omgdc:Bounds height="80.0" width="100.0" x="540.0" y="435.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Send_rejection_notification_via_email__3" bpmnElement="Send_rejection_notification_via_email__3">
+        <omgdc:Bounds height="80.0" width="100.0" x="540.0" y="285.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Exclusive_Databased_Gateway_3" bpmnElement="Exclusive_Databased_Gateway_3">
+        <omgdc:Bounds height="40.0" width="40.0" x="675.0" y="375.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_EndNoneEvent_3" bpmnElement="EndNoneEvent_3">
+        <omgdc:Bounds height="28.0" width="28.0" x="830.0" y="381.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="BPMNShape_new_tweet_3" targetElement="BPMNShape_Review_Tweet_3">
+        <omgdi:waypoint xsi:type="omgdc:Point" x="210.0" y="395.0"/>
+        <omgdi:waypoint xsi:type="omgdc:Point" x="285.0" y="395.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow" bpmnElement="SequenceFlow" sourceElement="BPMNShape_Review_Tweet_3" targetElement="BPMNShape_Approved__3">
+        <omgdi:waypoint xsi:type="omgdc:Point" x="385.0" y="395.0"/>
+        <omgdi:waypoint xsi:type="omgdc:Point" x="435.0" y="395.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_3" bpmnElement="SequenceFlow_3" sourceElement="BPMNShape_Publish_on_Twitter_3" targetElement="BPMNShape_Exclusive_Databased_Gateway_3">
+        <omgdi:waypoint xsi:type="omgdc:Point" x="640.0" y="475.0"/>
+        <omgdi:waypoint xsi:type="omgdc:Point" x="695.0" y="475.0"/>
+        <omgdi:waypoint xsi:type="omgdc:Point" x="695.0" y="416.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_4" bpmnElement="SequenceFlow_4" sourceElement="BPMNShape_Send_rejection_notification_via_email__3" targetElement="BPMNShape_Exclusive_Databased_Gateway_3">
+        <omgdi:waypoint xsi:type="omgdc:Point" x="640.0" y="325.0"/>
+        <omgdi:waypoint xsi:type="omgdc:Point" x="695.0" y="325.0"/>
+        <omgdi:waypoint xsi:type="omgdc:Point" x="695.0" y="375.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_5" bpmnElement="SequenceFlow_5" sourceElement="BPMNShape_Exclusive_Databased_Gateway_3" targetElement="BPMNShape_EndNoneEvent_3">
+        <omgdi:waypoint xsi:type="omgdc:Point" x="716.0" y="395.0"/>
+        <omgdi:waypoint xsi:type="omgdc:Point" x="830.0" y="395.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_no" bpmnElement="no" sourceElement="BPMNShape_Approved__3" targetElement="BPMNShape_Send_rejection_notification_via_email__3">
+        <omgdi:waypoint xsi:type="omgdc:Point" x="455.0" y="375.0"/>
+        <omgdi:waypoint xsi:type="omgdc:Point" x="455.0" y="325.0"/>
+        <omgdi:waypoint xsi:type="omgdc:Point" x="540.0" y="325.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_yes" bpmnElement="yes" sourceElement="BPMNShape_Approved__3" targetElement="BPMNShape_Publish_on_Twitter_3">
+        <omgdi:waypoint xsi:type="omgdc:Point" x="455.0" y="416.0"/>
+        <omgdi:waypoint xsi:type="omgdc:Point" x="455.0" y="475.0"/>
+        <omgdi:waypoint xsi:type="omgdc:Point" x="540.0" y="475.0"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

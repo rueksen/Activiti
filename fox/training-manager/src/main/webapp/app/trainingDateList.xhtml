@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/template.xhtml">	
+	<ui:define name="content">	
+	
+	<h2>List of upcoming Training Dates</h2>	
+	<h:form>
+					
+		<h:dataTable value="#{trainingDateList.list}" var="item" id="list" cellspacing="0" rowClasses="odd, even" styleClass="datatable">
+			<h:column>
+				<f:facet name="header">
+					<h:commandLink value="Id" action="#{trainingDateList.setSortColumn('id')}">
+						<f:ajax render="@form" />
+					</h:commandLink>					
+					<h:outputText value="[#{trainingDateList.sortOrder}]" rendered="#{'id' eq trainingDateList.sortColumn}" />
+				</f:facet>
+				#{item.id}
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">
+					Training
+				</f:facet>
+				#{item.training.name}
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">
+					<h:commandLink value="StartDate" action="#{trainingDateList.setSortColumn('startDate')}">
+						<f:ajax render="@form" />
+					</h:commandLink>					
+					<h:outputText value="&#160;[#{trainingDateList.sortOrder}]" rendered="#{'startDate' eq trainingDateList.sortColumn}" />
+				</f:facet>
+				#{item.startDate}
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">
+					<h:commandLink value="EndDate" action="#{trainingDateList.setSortColumn('endDate')}">
+						<f:ajax render="@form" />
+					</h:commandLink>					
+					<h:outputText value="&#160;[#{trainingDateList.sortOrder}]" rendered="#{'endDate' eq trainingDateList.sortColumn}" />
+				</f:facet>
+				#{item.endDate}
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">
+					<h:commandLink value="Location" action="#{trainingDateList.setSortColumn('location')}">
+						<f:ajax render="@form" />
+					</h:commandLink>					
+					<h:outputText value="&#160;[#{trainingDateList.sortOrder}]" rendered="#{'location' eq trainingDateList.sortColumn}" />
+				</f:facet>
+				#{item.location}
+			</h:column>
+									
+			<h:column>
+				<f:facet name="header">Options</f:facet>				
+				<h:outputLink value="registerForTrainingDate.jsf?trainingDateId=#{item.id}">register</h:outputLink>
+			</h:column>
+			
+			<f:facet name="footer">
+				<ui:include src="/WEB-INF/templates/listPagination.xhtml">
+					<ui:param name="listBean" value="${trainingDateList}" />
+				</ui:include>
+			</f:facet>	
+		</h:dataTable>
+	</h:form>
+	
+	
+	
+	
+	</ui:define>
+</ui:composition>

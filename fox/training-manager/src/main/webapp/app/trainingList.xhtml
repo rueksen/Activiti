@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/template.xhtml">	
+	<ui:define name="content">	
+	
+	<a href="trainingEdit.jsf">Create new training</a> 
+	
+	<h2>List of trainings</h2>	
+	<h:form>
+					
+		<h:dataTable value="#{trainingList.list}" var="item" id="list" cellspacing="0" rowClasses="odd, even" styleClass="datatable">
+			<h:column>
+				<f:facet name="header">
+					<h:commandLink value="Id" action="#{trainingList.setSortColumn('id')}">
+						<f:ajax render="@form" />
+					</h:commandLink>					
+					<h:outputText value="[#{trainingList.sortOrder}]" rendered="#{'id' eq trainingList.sortColumn}" />
+				</f:facet>
+				#{item.id}
+			</h:column>
+			
+			<h:column>
+				<f:facet name="header">
+					<h:commandLink value="Name" action="#{trainingList.setSortColumn('name')}">
+						<f:ajax render="@form" />
+					</h:commandLink>					
+					<h:outputText value="&#160;[#{trainingList.sortOrder}]" rendered="#{'name' eq trainingList.sortColumn}" />
+				</f:facet>
+				#{item.name}
+			</h:column>
+									
+			<h:column>
+				<f:facet name="header">Options</f:facet>
+				<h:commandLink value="delete" action="#{trainingList.delete(item)}">
+					<f:ajax render="@form" />
+				</h:commandLink>
+				&#160; | &#160; 
+				<h:outputLink value="trainingEdit.jsf?trainingId=#{item.id}">edit</h:outputLink>
+				&#160; | &#160; 
+				<h:outputLink value="trainingDateCreate.jsf?trainingId=#{item.id}">add date</h:outputLink>
+			</h:column>
+			
+			<f:facet name="footer">
+				<ui:include src="/WEB-INF/templates/listPagination.xhtml">
+					<ui:param name="listBean" value="${trainingList}" />
+				</ui:include>
+			</f:facet>
+		
+		</h:dataTable>
+	</h:form>
+	
+	
+	
+	
+	</ui:define>
+</ui:composition>

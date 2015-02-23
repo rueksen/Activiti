@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/template.xhtml">
+	<ui:define name="content">
+		<f:metadata>
+
+		</f:metadata>
+		<h1>File a new business trip request:</h1>
+		<h:form>
+			<table>
+				<tr>
+					<td><h:outputText value="Start date:" styleClass="caption" /></td>
+					<td><h:inputText value="#{businessTripRequest.startDate}"
+						styleClass="value" /></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="End date:" styleClass="caption" /></td>
+					<td><h:inputText value="#{businessTripRequest.endDate}"
+						styleClass="value" /></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="To" styleClass="caption" /></td>
+					<td><h:inputTextarea value="#{businessTripRequest.to}"
+						styleClass="value" /></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><h:commandButton value="Submit"
+						action="#{businessTripRequestService.submitRequest}"
+						style="margin-right : 8px" /></td>
+				</tr>
+			</table>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+	xmlns:activiti="http://activiti.org/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	targetNamespace="Examples">
+	
+	<process id="authorizeBusinessTripRequest">
+	
+		<startEvent id="startEvent" name="Business Trip Request Submitted"></startEvent>
+		<sequenceFlow targetRef="authorizeBusinessTrip" sourceRef="startEvent"></sequenceFlow>
+	
+		<userTask id="authorizeBusinessTrip" name="Authorize Business Trip"
+			activiti:formKey="authorizeBusinessTrip.jsf" activiti:assignee="#{authorizingManager.username}" />			
+		<sequenceFlow targetRef="gw" sourceRef="authorizeBusinessTrip"></sequenceFlow>
+
+		<exclusiveGateway id="gw" name="authorized?" />
+		<sequenceFlow targetRef="sendApprovalMail" sourceRef="gw">
+			<conditionExpression xsi:type="tFormalExpression">#{authorized}</conditionExpression>
+		</sequenceFlow>
+
+		<sequenceFlow targetRef="sendDisApprovalMail" sourceRef="gw">
+			<conditionExpression xsi:type="tFormalExpression">#{not authorized}</conditionExpression>
+		</sequenceFlow>
+
+		<serviceTask id="sendApprovalMail" activiti:class="com.camunda.fox.activiti.cdi.example.travelexpenses.service.MailService">
+			<extensionElements>
+				<activiti:field name="from" expression="#{authorizingManager.emailAdress}" />
+				<activiti:field name="to" expression="#{businessTripRequester.emailAdress}" />
+				<activiti:field name="subject" expression="Your business trip has been approved." />
+				<activiti:field name="html">
+					<activiti:expression>
+			        <![CDATA[
+			          <html>
+			            <body>
+			              Hello ${businessTripRequester.firstname} ${businessTripRequester.lastname},<br/><br/>
+			                 
+			              <strong>The following business trip has been approved:</strong> <br />
+			              ${businessTripRequest.startDate} - ${businessTripRequest.endDate},  ${businessTripRequest.to}<br/><br/> 
+			              ${authorizationComment}
+			              <br />
+			              <br />
+			              			              		                  
+			              Sincerely,
+			              ${authorizingManager.firstname} ${authorizingManager.lastname}
+			            </body>
+			          </html>
+			        ]]>
+      			</activiti:expression>
+				</activiti:field>
+			</extensionElements>
+		</serviceTask>
+		<sequenceFlow targetRef="authorized" sourceRef="sendApprovalMail" />
+		
+		<serviceTask id="sendDisApprovalMail"  activiti:class="com.camunda.fox.activiti.cdi.example.travelexpenses.service.MailService">
+			<extensionElements>
+				<activiti:field name="from" expression="#{authorizingManager.emailAdress}" />
+				<activiti:field name="to" expression="#{businessTripRequester.emailAdress}" />
+				<activiti:field name="subject"
+					expression="Your business trip has not been approved." />
+				<activiti:field name="html">
+					<activiti:expression>
+			       <![CDATA[
+			          <html>
+			            <body>
+			              Hello ${businessTripRequester.firstname} ${businessTripRequester.lastname},<br/><br/>
+			                 
+			              <strong>I cannot approve the following business trip:</strong> <br />
+			              ${businessTripRequest.startDate} - ${businessTripRequest.endDate},  ${businessTripRequest.to}<br/><br/> 
+			              ${authorizationComment}
+			              <br />
+			              <br />
+			              If you want to discuss the matter, please reply to this email. <br />
+			              Here, you can change your request:
+			              <a href="http://localhost:8080/activiti-cdi-example-travelexpenses/taskList.jsf">http://localhost:8080/activiti-cdi-example-travelexpenses/taskList.jsf</a> <br />
+						  <br/>				              			              		               
+			              Sincerely, <br />
+			              ${authorizingManager.firstname} ${authorizingManager.lastname}
+			            </body>
+			          </html>
+			        ]]>
+      			</activiti:expression>
+				</activiti:field>
+			</extensionElements>
+		</serviceTask>
+		<sequenceFlow targetRef="adjustBusinessTripRequest"
+			sourceRef="sendDisApprovalMail" />
+
+		<userTask id="adjustBusinessTripRequest" name="Adjust Business Trip Request"
+			activiti:formKey="adjustBusinessTripRequest.jsf" activiti:assignee="#{businessTripRequesterUsername}" />
+		<sequenceFlow targetRef="authorizeBusinessTrip"
+			sourceRef="adjustBusinessTripRequest" />
+
+		<boundaryEvent id="escalationTimer" cancelActivity="true"
+			attachedToRef="adjustBusinessTripRequest">
+			<timerEventDefinition>
+				<timeDuration>PT48H</timeDuration>
+			</timerEventDefinition>
+		</boundaryEvent>
+		<sequenceFlow targetRef="rejected" sourceRef="escalationTimer" />
+		
+		<!-- End Events -->
+		<endEvent id="authorized" name="Authorized"></endEvent>
+		<endEvent id="rejected" name="Rejected"></endEvent>
+
+	</process>
+
+</definitions>

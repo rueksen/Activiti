@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/template.xhtml">
+	<ui:define name="content">
+
+		<f:metadata>
+			<f:viewParam name="taskId" />			
+			<f:event type="preRenderView" listener="#{businessProcess.startTask(taskId, true)}" />
+		</f:metadata>
+		
+		<h1>#{task.name}</h1>	
+			
+		<h:form>
+			<table>
+				<tr>
+					<td colspan="2">
+					<h2>Business Trip Request:</h2>
+					</td>
+				</tr>
+				<tr>
+					<td>Employee:</td>
+					<td>#{businessTripRequester.firstname} #{businessTripRequester.lastname}</td>
+				</tr>
+				<tr>
+					<td>Start date:</td>
+					<td>#{businessTripRequest.startDate}</td>
+				</tr>
+				<tr>
+					<td>End date:</td>
+					<td>#{businessTripRequest.endDate}</td>
+				</tr>
+				<tr>
+					<td>To:</td>
+					<td>#{businessTripRequest.to}</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+					<h2>Authorization:</h2>
+					</td>
+				</tr>
+				<tr>
+					<td>Authorize trip?</td>
+					<!-- we can reference process variables using the 'processVariables'-map -->
+					<td><h:selectBooleanCheckbox
+						value="#{processVariables['authorized']}" styleClass="value" /></td>
+				</tr>
+				<tr>
+					<td>Message:</td>
+					<td><h:inputTextarea value="#{processVariables['authorizationComment']}"  /></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><h:commandButton value="Submit"
+						action="#{businessProcess.completeTask(true)}" /></td>
+				</tr>
+			</table>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

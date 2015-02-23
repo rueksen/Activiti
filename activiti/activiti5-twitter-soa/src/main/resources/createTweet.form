@@ -1,0 +1,22 @@
+<h1>Create a new tweet</h1>
+
+<p>
+  <b>Your Email-Address: </b>
+  <input type="text" name="email" value="" />
+  <input type="hidden" name="email_required" value="true" />
+<p>
+
+<p>
+  <b>Which Twitter-Account to use:</b><br/>
+  <select id="classificationBox" name="twitterAccount">
+    <option value="Value1">camunda</option>
+  </select>
+  <input type="hidden" name="twitterAccount_required" value="true" />
+</p>
+
+<p>
+  <b>Message:</b><br/>
+  <textarea name="content" value=""></textarea>
+</p>
+
+

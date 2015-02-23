@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/template.xhtml">	
+	<ui:define name="content">
+	
+	<f:metadata>
+            <f:viewParam id="id" name="employeeId" value="#{employeeEdit.id}"  />       
+    </f:metadata>
+		
+	<h2>
+		<h:outputText value="Add a new employee" rendered="#{employeeEdit.new}" />
+		<h:outputText value="Edit employee" rendered="#{not employeeEdit.new}" />		
+	</h2>
+			
+	<h:form>
+		<table>
+				
+				<tr>
+					<td>Firstname:</td>
+					<td>						
+						<h:inputText id="firstname" value="#{employee.firstname}">
+							<f:ajax event="blur" render="firstnameMessage"/> 
+						</h:inputText>
+					</td>
+					<td><h:message id="firstnameMessage" for="firstname" errorClass="invalid" /></td>
+				</tr>
+				
+				<tr>
+					<td>Lastname:</td>
+					<td>						
+						<h:inputText id="lastname" value="#{employee.lastname}">
+							<f:ajax event="blur" render="lastnameMessage"/> 
+						</h:inputText>
+					</td>
+					<td><h:message id="lastnameMessage" for="lastname" errorClass="invalid" /></td>
+				</tr>
+				
+				<tr>
+					<td>Username:</td>
+					<td>						
+						<h:inputText id="username" value="#{employee.username}">
+							<f:ajax event="blur" render="usernameMessage"/> 
+						</h:inputText>
+					</td>
+					<td><h:message id="usernameMessage" for="username" errorClass="invalid" /></td>
+				</tr>
+				
+				<tr>
+					<td>Password:</td>
+					<td>						
+						<h:inputText id="password" value="#{employee.password}">
+							<f:ajax event="blur" render="passwordMessage"/> 
+						</h:inputText>
+					</td>
+					<td><h:message id="passwordMessage" for="password" errorClass="invalid" /></td>
+				</tr>
+				
+				<tr>
+					<td />
+					<td>
+						<h:commandButton action="#{employeeEdit.save()}" value="save" type="submit" />						
+					</td>
+				</tr>
+			</table>		
+	</h:form>
+
+	</ui:define>
+</ui:composition>

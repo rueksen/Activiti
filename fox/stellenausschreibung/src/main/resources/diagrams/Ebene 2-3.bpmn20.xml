@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:signavio="http://www.signavio.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" exporter="Signavio Process Editor, http://www.signavio.com" exporterVersion="5.2.1" id="sid-b8697dfc-f3de-4752-896b-25802fd147d2" targetNamespace="http://www.signavio.com/bpmn20" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/2.0/20100501/BPMN20.xsd">
+   
+   <process id="Ebene_2-3" isExecutable="true" name="Ebene_2-3">
+      
+      <startEvent id="Freie_Stelle_gemeldet_2" name="Freie Stelle&#10;gemeldet"/>
+      <subProcess id="Ausschreibung_durchf_hren" name="Ausschreibung durchführen" triggeredByEvent="false"/>
+      <sendTask id="Erfolgsmeldung_senden" name="Erfolgsmeldung senden"/>
+      <endEvent id="Stelle_ausgeschrieben_2" name="Stelle&#10;ausgeschrieben"/>
+      <userTask id="Stellenbe-schreibung_sichten" name="Stellenbe-schreibung sichten"/>
+      <exclusiveGateway gatewayDirection="Diverging" id="OK__2" name="OK?">
+         <extensionElements>
+            <signavio:signavioLabel align="center" bottom="false" left="false" ref="text_name" right="false" top="false" valign="middle" x="22.0" y="62.0"/>
+            
+            
+            
+            
+            
+         </extensionElements>
+         
+         
+         
+      </exclusiveGateway>
+      <userTask id="Stelle_beschreiben_2" name="Stelle beschreiben"/>
+      <userTask id="Stellenbe-schreibung_korrigieren" name="Stellenbe-schreibung korrigieren"/>
+      <userTask id="Ausschreibung_ansto_en_2" name="Ausschreibung anstoßen"/>
+      <sequenceFlow id="SequenceFlow_22" sourceRef="Freie_Stelle_gemeldet_2" targetRef="Stelle_beschreiben_2"/>
+      <sequenceFlow id="SequenceFlow_20" sourceRef="Stelle_beschreiben_2" targetRef="Stellenbe-schreibung_sichten"/>
+      <sequenceFlow id="SequenceFlow_13" sourceRef="Stellenbe-schreibung_sichten" targetRef="OK__2"/>
+      <sequenceFlow id="SequenceFlow_7" sourceRef="Ausschreibung_ansto_en_2" targetRef="Ausschreibung_durchf_hren"/>
+      <sequenceFlow id="SequenceFlow" sourceRef="Ausschreibung_durchf_hren" targetRef="Erfolgsmeldung_senden"/>
+      <sequenceFlow id="SequenceFlow_9" sourceRef="Erfolgsmeldung_senden" targetRef="Stelle_ausgeschrieben_2"/>
+      <sequenceFlow id="nein_3" name="nein" sourceRef="OK__2" targetRef="Stellenbe-schreibung_korrigieren"/>
+      <sequenceFlow id="ja" name="ja" sourceRef="OK__2" targetRef="Ausschreibung_ansto_en_2"/>
+      <sequenceFlow id="SequenceFlow_11" sourceRef="Stellenbe-schreibung_korrigieren" targetRef="Stellenbe-schreibung_sichten"/>
+   </process>
+   <bpmndi:BPMNDiagram id="sid-9e9d6d51-1a3c-42d6-ac6c-ecad5ba9d470">
+      <bpmndi:BPMNPlane bpmnElement="Ebene_2-3" id="sid-a0296f2d-cb45-43b5-8b4d-1abc6b8fca05">
+         
+         
+         
+         
+         <bpmndi:BPMNShape bpmnElement="Freie_Stelle_gemeldet_2" id="Freie_Stelle_gemeldet_2_gui">
+            <omgdc:Bounds height="30.0" width="30.0" x="161.49999459087866" y="796.9999872148042"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Ausschreibung_durchf_hren" id="Ausschreibung_durchf_hren_gui" isExpanded="false">
+            <omgdc:Bounds height="79.36666534443702" width="111.57502147367109" x="1018.1099742315948" y="771.9999872148042"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Erfolgsmeldung_senden" id="Erfolgsmeldung_senden_gui">
+            <omgdc:Bounds height="79.36666534443702" width="111.57502147367109" x="1234.684995705266" y="771.6833198870227"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Stelle_ausgeschrieben_2" id="Stelle_ausgeschrieben_2_gui">
+            <omgdc:Bounds height="28.0" width="28.0" x="1391.2600171789368" y="797.3666525592412"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Stellenbe-schreibung_sichten" id="Stellenbe-schreibung_sichten_gui">
+            <omgdc:Bounds height="80.0" width="100.0" x="420.0" y="1094.8863808684828"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="OK__2" id="OK__2_gui" isMarkerVisible="true">
+            <omgdc:Bounds height="40.0" width="40.0" x="565.0" y="1114.8863808684828"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Stelle_beschreiben_2" id="Stelle_beschreiben_2_gui">
+            <omgdc:Bounds height="80.0" width="100.0" x="239.57999427368773" y="936.9999872148042"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Stellenbe-schreibung_korrigieren" id="Stellenbe-schreibung_korrigieren_gui">
+            <omgdc:Bounds height="80.0" width="100.0" x="650.0" y="937.6333218703671"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNShape bpmnElement="Ausschreibung_ansto_en_2" id="Ausschreibung_ansto_en_2_gui">
+            <omgdc:Bounds height="79.36666534443702" width="111.57502147367097" x="838.424978526329" y="937.6333218703671"/>
+         </bpmndi:BPMNShape>
+         <bpmndi:BPMNEdge bpmnElement="SequenceFlow_11" id="SequenceFlow_11_gui">
+            <omgdi:waypoint x="700.0" y="937.0"/>
+            <omgdi:waypoint x="700.0" y="921.0"/>
+            <omgdi:waypoint x="460.0" y="921.0"/>
+            <omgdi:waypoint x="460.0" y="1094.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SequenceFlow_13" id="SequenceFlow_13_gui">
+            <omgdi:waypoint x="520.0" y="1134.0"/>
+            <omgdi:waypoint x="565.0" y="1135.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SequenceFlow_22" id="SequenceFlow_22_gui">
+            <omgdi:waypoint x="191.0" y="811.0"/>
+            <omgdi:waypoint x="215.53999443228318" y="811.9999872148042"/>
+            <omgdi:waypoint x="215.53999443228318" y="976.9999872148042"/>
+            <omgdi:waypoint x="239.0" y="976.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SequenceFlow_20" id="SequenceFlow_20_gui">
+            <omgdi:waypoint x="339.0" y="976.0"/>
+            <omgdi:waypoint x="379.78999713684385" y="976.9999872148042"/>
+            <omgdi:waypoint x="379.78999713684385" y="1134.8863808684828"/>
+            <omgdi:waypoint x="420.0" y="1134.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SequenceFlow_9" id="SequenceFlow_9_gui">
+            <omgdi:waypoint x="1346.0" y="811.0"/>
+            <omgdi:waypoint x="1391.0" y="811.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SequenceFlow" id="SequenceFlow_gui">
+            <omgdi:waypoint x="1129.0" y="811.0"/>
+            <omgdi:waypoint x="1234.0" y="811.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="nein_3" id="nein_3_gui">
+            <omgdi:waypoint x="585.0" y="1114.0"/>
+            <omgdi:waypoint x="585.5" y="977.6333218703671"/>
+            <omgdi:waypoint x="650.0" y="977.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="SequenceFlow_7" id="SequenceFlow_7_gui">
+            <omgdi:waypoint x="950.0" y="977.0"/>
+            <omgdi:waypoint x="984.0549871157975" y="977.3166545425856"/>
+            <omgdi:waypoint x="984.0549871157975" y="811.6833198870227"/>
+            <omgdi:waypoint x="1018.0" y="811.0"/>
+         </bpmndi:BPMNEdge>
+         <bpmndi:BPMNEdge bpmnElement="ja" id="ja_gui">
+            <omgdi:waypoint x="605.0" y="1135.0"/>
+            <omgdi:waypoint x="807.0" y="1135.3863808684828"/>
+            <omgdi:waypoint x="807.0" y="977.3166545425856"/>
+            <omgdi:waypoint x="838.0" y="977.0"/>
+         </bpmndi:BPMNEdge>
+      </bpmndi:BPMNPlane>
+   </bpmndi:BPMNDiagram>
+</definitions>

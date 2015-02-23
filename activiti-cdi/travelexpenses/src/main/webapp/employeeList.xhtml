@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/template.xhtml">	
+	<ui:define name="content">	
+	
+	<a href="employeeEdit.jsf">Create a new employee</a> 
+	
+	<h2>List of Employees</h2>	
+	<h:form>
+					
+		<h:dataTable value="#{employeeList.list}" var="item" id="list" cellspacing="0" rowClasses="odd, even" styleClass="datatable">
+			<h:column>
+				<f:facet name="header">
+					<h:commandLink value="Id" action="#{employeeList.setSortColumn('id')}">
+						<f:ajax render="@form" />
+					</h:commandLink>					
+					<h:outputText value="[#{employeeList.sortOrder}]" rendered="#{'id' eq employeeList.sortColumn}" />
+				</f:facet>
+				#{item.id}
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:commandLink value="Username" action="#{employeeList.setSortColumn('username')}">
+						<f:ajax render="@form" />
+					</h:commandLink>					
+					<h:outputText value="[#{employeeList.sortOrder}]" rendered="#{'username' eq employeeList.sortColumn}" />
+				</f:facet>
+				#{item.username}
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:commandLink value="Firstname" action="#{employeeList.setSortColumn('firstname')}">
+						<f:ajax render="@form" />
+					</h:commandLink>					
+					<h:outputText value="[#{employeeList.sortOrder}]" rendered="#{'firstname' eq employeeList.sortColumn}" />
+				</f:facet>
+				#{item.firstname}
+			</h:column>
+			<h:column>
+				<f:facet name="header">
+					<h:commandLink value="Lastname" action="#{employeeList.setSortColumn('lastname')}">
+						<f:ajax render="@form" />
+					</h:commandLink>					
+					<h:outputText value="[#{employeeList.sortOrder}]" rendered="#{'lastname' eq employeeList.sortColumn}" />
+				</f:facet>
+				#{item.lastname}
+			</h:column>
+									
+			<h:column>
+				<f:facet name="header">Options</f:facet>
+				<h:commandLink value="delete" action="#{employeeList.delete(item)}">
+					<f:ajax render="@form" />
+				</h:commandLink>
+				&#160; | &#160; 
+				<h:outputLink value="employeeEdit.jsf?employeeId=#{item.id}">edit</h:outputLink>				
+			</h:column>
+
+			<f:facet name="footer">
+				<div class="pagination">
+					<div class="pagination-left">
+						<h:commandLink value="Previous" styleClass="page-nav-prev"
+							rendered="#{employeeList.hasLess}" action="#{employeeList.prevPage()}">
+							<f:ajax render="@form" />
+						</h:commandLink>
+					</div>
+					<div class="pagination-center"></div>
+					<div class="pagination-right">
+						<h:commandLink styleClass="page-nav-next" value="Next"
+							rendered="#{employeeList.hasMore}" action="#{employeeList.nextPage()}">
+							<f:ajax render="@form" />
+						</h:commandLink>
+					</div>
+					<div style="clear: both" />
+				</div>
+			</f:facet>
+
+			</h:dataTable>
+	</h:form>
+	
+	
+	
+	
+	</ui:define>
+</ui:composition>

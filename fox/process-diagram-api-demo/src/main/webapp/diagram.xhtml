@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  >
+	<head>
+		<title>Process Diagram API Demo</title>
+		<link href="css/jquery-ui.css" rel="stylesheet" type="text/css"/>
+    	<script src="js/jquery.min.js"></script>
+    	<script src="js/jquery-ui.min.js"></script>
+	</head>
+	<body>
+	  <div style="position: relative">
+	   <img src="diagram.png" />
+ 	   <ui:repeat value="#{processDiagramController.getActiveActivityBoundsOfLatestProcessInstance()}" var="bounds">
+       <img src="token.png" style="
+         position: absolute;
+         left: #{bounds.x + bounds.width - 25}px;
+         top: #{bounds.y - 15}px;
+         "/>
+	     <div class="highlight" style="
+	       cursor: pointer;
+	       position: absolute;
+	       left: #{bounds.x}px;
+	       top: #{bounds.y}px;
+	       width: #{bounds.width}px;
+	       height: #{bounds.height}px;
+	       /*border: 2px solid rgb(181, 21, 43);
+	       background: rgba(181, 21, 43, 0.1);
+	       border-radius: 5px; -moz-border-radius: 5px;*/"></div>
+	    </ui:repeat>
+	  </div>
+
+    <div id="dialog" title="Task Details">
+      Name: #{processDiagramController.task.name}<br />
+      Assignee: #{processDiagramController.task.assignee}<br />
+      Created: #{processDiagramController.task.createTime}
+    </div>
+      
+      <script>
+        $(document).ready(function() {
+
+        $("#dialog").dialog({ autoOpen: false, modal: true });
+
+        $(".highlight").click(function() {
+          var x = $(this).position().left + $(this).outerWidth();
+          var y = $(this).position().top - $(document).scrollTop();
+          $("#dialog").dialog('option', 'position', [x,y]);
+          $('#dialog').dialog('open');
+        });
+
+      });
+    </script>
+	</body>
+</html>

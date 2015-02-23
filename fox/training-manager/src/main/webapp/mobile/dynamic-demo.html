@@ -1,0 +1,91 @@
+<!DOCTYPE html> 
+<html> 
+	<head> 
+	<title>Page Title</title> 
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0b2/jquery.mobile-1.0b2.min.css" />
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.2.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/mobile/1.0b2/jquery.mobile-1.0b2.min.js"></script>
+	<script type="text/javascript" charset="utf-8">
+	 
+	 var formatDate = function(date) {
+	   
+	   return date.getDate() + '.' + date.getMonth() + '.' + date.getFullYear();
+	 }
+	 
+	 $.ajax('../rest/trainingDate/list', {
+       //username: 'jakob.freund@camunda.com',
+       //password: 'cam123456',
+	   success: function(data) {
+       var overviewItems = [];
+
+       for(var i = 0; i<data.length; i++) {
+         // assemble list of training
+         var startdate = formatDate(new Date(data[i].startdate));
+         var enddate = formatDate(new Date(data[i].enddate));
+       
+         overviewItems.push('<li><a href="#training-date-details-' + data[i].id + '"><h1>' + data[i].name + '</h1> <p class="ui-li-aside">' + startdate + ' - ' + enddate  + '</p><p><strong>' + data[i].location + '</strong></p></a></li>');
+       
+         overviewItems.push('<div/>');
+
+         // assemble training detail views
+         var detailsItems = [];
+         var attendees = data[i].attendees;
+         detailsItems.push('<div data-role="header"><h1>' + data[i].name + ' Details</h1></div>');
+         detailsItems.push('<div data-role="content"><h1>' + data[i].name + '</h1>');
+         detailsItems.push('<p>' + startdate + ' - ' + enddate  + ' <strong>' + data[i].location + '</strong></p>');
+         detailsItems.push('<div data-role="collapsible" data-collapsed="false"><h3>Attendees</h3>');
+
+         for(var j = 0; j<attendees.length; j++) {
+           var attendee = attendees[j];
+           detailsItems.push('<p><strong>' + attendee.firstname + ' ' + attendee.lastname + '</strong> <a href="mailto:' + attendees[j].email + '" class="ui-link-inherit">' + attendees[j].email + '</a></p>');
+         }
+         detailsItems.push('</div><p><a href="#training-dates" data-direction="reverse">Back to overview</a></p></div>');
+         detailsItems.push('<div data-role="footer"><h4>powered by <a href="http://www.camunda.com/fox/" target="blank">Fox BPM Platform</a> and <a href="http://jquerymobile.com/" target="blank">jQuery Mobile</a></h4></div>');
+         $('<div/>', {
+            'data-role': 'page',
+            'data-url': 'training-date-details-' + data[i].id,
+            'id': 'training-date-details-' + data[i].id,
+            html: detailsItems.join('')
+          }).appendTo('body');
+          $('#training-date-details-' + data[i].id).page();
+        }
+
+        $('<ul/>', {
+          'data-role': 'listview',
+          html: overviewItems.join('')
+          }).appendTo('#training-list-container');
+        $('ul').listview();
+      },
+      error: function(event, request, options, error) {
+        //switch (event.status) {
+          // TODO: redirect to login?
+          //case 401: common.setLocation('/sign-in');
+        //  break;
+        //}
+      }
+    });
+	</script>
+</head> 
+
+<body> 
+  <!-- Start of training dates overview page -->
+  <div data-role="page" id="training-dates">
+
+  	<div data-role="header" >
+			<h1>Training Dates</h1>
+  	</div>
+
+  	<div data-role="content" id="training-list-container">	
+        <!-- trainings will be appended here -->
+  	</div><!-- /content -->
+
+  	<div data-role="footer">
+  		<h4>powered by <a href="http://www.camunda.com/fox/" target="blank">Fox BPM Platform</a> and <a href="http://jquerymobile.com/" target="blank">jQuery Mobile</a></h4>
+  	</div><!-- /footer -->
+  </div><!-- /page -->
+
+</body>
+</html>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/template.xhtml">	
+	<ui:define name="content">
+
+	<f:metadata>
+		<f:viewParam name="taskId" />			
+		<f:event type="preRenderView" listener="#{businessProcess.startTask(taskId, true)}" />            
+   	</f:metadata>
+	
+	<h2>
+		#{task.name} 
+	</h2>
+	
+	You have to inform the following user about the cancellation of the training date:
+
+	<h:form>
+			
+		<table>
+				<tr>
+					<td>Firstname:</td>
+					<td>
+						#{currentRegistration.attendee.firstname}
+					</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Lastname:</td>
+					<td>
+						#{currentRegistration.attendee.lastname}
+					</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Email:</td>
+					<td>
+						#{currentRegistration.attendee.email}
+					</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>Training date:</td>
+					<td>
+						<strong>#{currentRegistration.trainingDate.training.name}</strong>
+						#{currentRegistration.trainingDate.startDate} - #{currentRegistration.trainingDate.endDate} in 
+						#{currentRegistration.trainingDate.location} 
+					</td>
+					<td></td>
+				</tr>									
+				<tr>
+					<td><h:commandButton action="#{businessProcess.completeTask(true)}" 
+							value="save" type="submit" />
+					</td>
+				</tr>
+		</table>
+	</h:form>
+
+	</ui:define>
+</ui:composition>

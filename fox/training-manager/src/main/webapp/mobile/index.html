@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>index</title>
+    <link rel="stylesheet" href="css/master.css" type="text/css" media="screen" charset="utf-8">
+    <link rel="stylesheet" href="css/jquery-ui-1.8.16.custom.css" type="text/css" media="screen" charset="utf-8">
+    <script src="../javascript/jquery-1.6.2.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../javascript/jquery-ui-1.8.16.custom.min.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" charset="utf-8">
+      $.getJSON('../rest/tasks', function(data) {
+        var items = [];
+
+        items.push('<div id="accordion">');
+
+        for(var i = 0; i<data.length; i++) {
+          items.push('<h3><a href="#">' + data[i].name + '</a></h3>');
+          items.push('<div>'+data[i].description+'</div>');
+        }
+
+        items.push('<div/>');
+
+        $('<ul/>', {
+          'class': 'my-new-list',
+          html: items.join('')
+        }).appendTo('body');
+        
+        // Accordion
+			  $("#accordion").accordion({ header: "h3" });
+        
+      });
+            
+    </script>
+  </head>
+  <body id="index">
+ 
+  </body>
+</html>

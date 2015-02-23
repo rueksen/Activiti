@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/template.xhtml">
+	<ui:define name="content">
+		<f:metadata>
+			<f:viewParam name="taskId" />
+			<f:event type="preRenderView" listener="#{businessProcess.startTask(taskId, true)}" />
+		</f:metadata>
+		
+		<h1>#{task.name}</h1>
+			
+		<h:form>
+			<table>
+				<tr>
+					<td>Message by #{authorizingManager.firstname} #{authorizingManager.lastname}</td>
+					<td>#{processVariables['authorizationComment']}</td>
+				</tr>
+				<tr>
+					<td><h:outputText value="Start date:" styleClass="caption" /></td>
+					<td><h:inputText value="#{businessTripRequest.startDate}"
+						styleClass="value" /></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="End date:" styleClass="caption" /></td>
+					<td><h:inputText value="#{businessTripRequest.endDate}"
+						styleClass="value" /></td>
+				</tr>
+				<tr>
+					<td><h:outputText value="To" styleClass="caption" /></td>
+					<td><h:inputTextarea value="#{businessTripRequest.to}"
+						styleClass="value" /></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><h:commandButton value="Submit"
+						action="#{businessProcess.completeTask(true)}"
+						style="margin-right : 8px" /></td>
+				</tr>
+			</table>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

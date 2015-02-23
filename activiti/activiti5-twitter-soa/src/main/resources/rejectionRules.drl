@@ -1,0 +1,10 @@
+package com.camunda.fox.demo.twitter
+
+import com.camunda.fox.demo.twitter.Tweet;
+
+rule "Reject if test case wants a rejection"
+when
+	t : Tweet( content matches '.*(REJECT).*' )
+then
+	t.reject("This tweet was requested to be rejected, hence it is rejected.");
+end

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/template.xhtml">
+	<ui:define name="content">
+	
+	<h:panelGroup rendered="#{not authenticator.loggedIn}">
+		<h2>Login</h2>
+		<h:form>
+			<table>
+				<tr>
+					<td>Username:</td>
+					<td><h:inputText id="email" value="#{authenticator.username}" /></td>
+					<td><h:message for="email" errorClass="invalid" /></td>
+				</tr>
+				<tr>
+					<td>Password:</td>
+					<td><h:inputSecret id="password" value="#{authenticator.password}" />
+					</td>
+					<td><h:message for="password" errorClass="invalid" /></td>
+				</tr>
+				<tr>
+					<td><h:commandButton action="#{authenticator.authenticate()}"
+							value="login" type="submit" />
+					</td>
+				</tr>
+			</table>
+		</h:form>
+	</h:panelGroup>
+	<h:panelGroup rendered="#{authenticator.loggedIn}">
+	You are already logged in as #{currentUser.firstname} #{currentUser.lastname}
+	</h:panelGroup>
+
+	</ui:define>
+</ui:composition>

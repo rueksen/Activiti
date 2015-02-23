@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/template.xhtml">	
+	<ui:define name="content">
+	
+	<f:metadata>
+            <f:viewParam id="id" name="trainingId" value="#{trainingDateCreate.trainingId}"  />       
+    </f:metadata>
+	
+	<h2>
+		Create a new training date
+	</h2>
+
+	<h:form>
+		<table>
+				<tr>
+					<td>
+						<h3>Comments:</h3>
+					
+						Your ideas for the new training date: where and when do you think it could take place?<br />
+						<h:inputTextarea value="#{newTrainingDate.comment}"  rows="10" cols="50" required="true">
+						
+						</h:inputTextarea>						
+					</td>					
+				</tr>							
+				<tr>
+					<td><h:commandButton action="#{trainingDateCreate.save()}" 
+							value="save" type="submit" />
+					</td>
+				</tr>
+			</table>		
+	</h:form>
+
+	</ui:define>
+</ui:composition>

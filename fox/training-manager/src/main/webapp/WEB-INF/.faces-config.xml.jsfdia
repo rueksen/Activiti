@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:#dologin.xhtml" PATH="/dologin.xhtml"
+  SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#dologin.xhtml:0" NAME="item"
+   PATH="/dologin.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="success::#app#home.xhtml" NAME="output"
+    PATH="/app/home.xhtml" TARGET="rules:#app#home.xhtml"
+    TITLE="success" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="failure::#dologin.xhtml" NAME="output1"
+    PATH="/dologin.xhtml" TARGET="rules:#dologin.xhtml" TITLE="failure" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#app#home.xhtml" PATH="/app/home.xhtml"
+  SHAPE="256,33,0,0" model-entity="JSFProcessGroup"/>
+ <PROCESS-ITEM NAME="rules:#app#userEdit.xhtml"
+  PATH="/app/userEdit.xhtml" SHAPE="32,161,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#app#userEdit.xhtml:0" NAME="item"
+   PATH="/app/userEdit.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="success::#app#userList.xhtml" NAME="output"
+    PATH="/app/userList.xhtml" TARGET="rules:#app#userList.xhtml"
+    TITLE="success" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#app#userList.xhtml"
+  PATH="/app/userList.xhtml" SHAPE="240,177,0,0" model-entity="JSFProcessGroup"/>
+</PROCESS>

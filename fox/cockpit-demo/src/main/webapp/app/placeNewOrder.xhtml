@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/template.xhtml">
+		
+<ui:define name="content">
+	
+	<h2>Place a new order</h2>
+
+	<h:form>
+		<table>
+				<tr>
+					<td style="font-weight: bold;">Customer name:</td>
+					<td><h:inputText id="company" value="#{orderStarter.customer}" /></td>
+				</tr>
+				<tr>
+					<td style="font-weight: bold;">Order details:</td>
+					<td><h:inputText id="email" value="#{orderStarter.details}" /></td>
+				</tr>
+				<tr>
+					<td><h:commandButton action="#{orderStarter.placeOrder()}" value="save" type="submit" /></td>
+				</tr>
+			</table>		
+	</h:form>
+
+	</ui:define>
+</ui:composition>

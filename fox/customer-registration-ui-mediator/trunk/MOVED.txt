@@ -1,0 +1,1 @@
+This showcase/demo was moved to https://bitbucket.org/camunda/fox-showcases/src/master/ui-mediator. See https://app.camunda.com/confluence/display/foxUserGuide/UI+Mediator for more details.

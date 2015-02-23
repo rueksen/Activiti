@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/template.xhtml">	
+	<ui:define name="content">
+	
+	<f:metadata>
+            <f:viewParam id="id" name="trainingId" value="#{editTraining.trainingId}"  />       
+    </f:metadata>
+	
+	<a href="trainingList.jsf">training list</a> 
+	
+	<h2>
+		<h:outputText value="Create a new training" rendered="#{editTraining.new}" />
+		<h:outputText value="Edit training" rendered="#{not editTraining.new}" />		
+	</h2>
+			
+	<h:form>
+		<table>
+				
+				<tr>
+					<td>Dame:</td>
+					<td>						
+						<h:inputText id="name" value="#{training.name}">
+							<f:ajax event="blur" render="nameMessage"/> 
+						</h:inputText>
+					</td>
+					<td><h:message id="nameMessage" for="name" errorClass="invalid" /></td>
+				</tr>
+				
+				<tr>
+					<td>Description:</td>
+					<td>	
+						<h:inputTextarea id="descr" value="#{training.description}" cols="40" rows="10">
+							<f:ajax event="blur" render="descrMessage"/> 
+						</h:inputTextarea>
+					</td>
+					<td><h:message id="descrMessage" for="descr" errorClass="invalid" /></td>
+				</tr>							
+				
+				<tr>
+					<td />
+					<td>
+						<h:commandButton action="#{trainingEdit.save()}" 
+							value="save" type="submit"  rendered="#{trainingEdit.new}"/>
+						<h:commandButton action="#{trainingEdit.update()}" 
+							value="update" type="submit" rendered="#{not trainingEdit.new}"/>
+						<h:commandButton action="#{trainingEdit.cancel()}" immediate="true"
+							value="cancel" />
+					</td>
+				</tr>
+			</table>		
+	</h:form>
+
+	</ui:define>
+</ui:composition>

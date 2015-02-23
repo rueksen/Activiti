@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns:activiti="http://activiti.org/bpmn" xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:signavio="http://www.signavio.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" exporter="Signavio Process Editor, http://www.signavio.com" exporterVersion="" id="sid-d8c567e3-77b2-4220-9ed4-20ece344df53" targetNamespace="http://www.signavio.com/bpmn20" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://www.omg.org/spec/BPMN/2.0/20100501/BPMN20.xsd">
+   <process name="TwitterREST" id="TwitterREST" isExecutable="false">
+      
+      <startEvent activiti:formKey="createTweet.form" id="new_tweet" name="new tweet" />
+      <serviceTask id="Review_tweet" name="Review tweet" activiti:class="com.camunda.fox.demo.twitter.drools.DroolsDelegate">
+      	<extensionElements>
+      		<activiti:field name="drlFile" stringValue="rejectionRules.drl" />
+      		<activiti:field name="facts" stringValue="tweet" />
+      	</extensionElements>
+      </serviceTask>
+      <exclusiveGateway gatewayDirection="Diverging" id="approved_" name="approved?" />
+      <serviceTask id="publish_tweet" name="publish tweet" activiti:class="com.camunda.fox.demo.twitter.rest.RestDelegate">
+      	<extensionElements>
+      		<activiti:field name="url" stringValue="http://localhost:8182/rest/tweet/" />
+      		<activiti:field name="method" stringValue="POST" />
+      		<activiti:field name="parameter" stringValue="tweet" />
+      	</extensionElements>       
+      </serviceTask>
+      <exclusiveGateway gatewayDirection="Converging" id="Exclusive_Databased_Gateway" name="" />
+      <serviceTask id="notify_user" name="notify user" activiti:type="mail">
+		  <extensionElements>
+		    <activiti:field name="from" stringValue="activiti@camunda.com" />
+		    <activiti:field name="to" expression="${tweet.email}" />
+		    <activiti:field name="subject" expression="Your tweet has been rejected" />
+		    <activiti:field name="html">
+		      <activiti:expression>
+		        <![CDATA[
+		          <html>
+		            <body>
+		              Hi!<br/><br/>
+		              
+		              Unfortuntaley your tweet has been rejected.<br /><br/>
+		              
+		              Original content: ${tweet.content}<br /><br/>
+		              
+		              Rejection reasons: ${tweet.rejectionComment}<br /><br/>
+		            </body>
+		          </html>
+		        ]]>
+		      </activiti:expression>
+		    </activiti:field>      
+		  </extensionElements>       
+      </serviceTask>
+      <endEvent id="EndNoneEvent" name="Ended" />
+      
+      <sequenceFlow id="SequenceFlow_2" name="" sourceRef="new_tweet" targetRef="Review_tweet">
+       	<extensionElements>
+           <activiti:executionListener event="take" class="com.camunda.fox.demo.twitter.CreateTweetObjectDelegate"/>
+        </extensionElements>       
+      </sequenceFlow>     
+      <sequenceFlow id="SequenceFlow_3" name="" sourceRef="Review_tweet" targetRef="approved_"/>
+      
+      <sequenceFlow id="yes" name="yes" sourceRef="approved_" targetRef="publish_tweet">
+      	 <conditionExpression>${tweet.approved}</conditionExpression>
+      </sequenceFlow>
+      <sequenceFlow id="SequenceFlow_4" name="" sourceRef="approved_" targetRef="notify_user">
+      	 <conditionExpression>${!tweet.approved}</conditionExpression>
+      </sequenceFlow>
+      <sequenceFlow id="SequenceFlow_5" name="" sourceRef="notify_user" targetRef="Exclusive_Databased_Gateway"/>
+      <sequenceFlow id="SequenceFlow" name="" sourceRef="publish_tweet" targetRef="Exclusive_Databased_Gateway"/>
+      <sequenceFlow id="SequenceFlow_1" name="" sourceRef="Exclusive_Databased_Gateway" targetRef="EndNoneEvent"/>
+   </process>
+   
+</definitions>

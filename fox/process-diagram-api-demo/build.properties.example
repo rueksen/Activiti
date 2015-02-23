@@ -1,0 +1,2 @@
+# Defines the home directory of the deployment folder in the fox installation.
+deploy.dir=/home/falko/2012-04/fox-platform-enterprise-edition-jboss-6.0.0-alpha4/server/jboss-as-7.1.0.Final/standalone/deployments

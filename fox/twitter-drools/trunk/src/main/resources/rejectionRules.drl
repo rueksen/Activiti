@@ -1,0 +1,17 @@
+package com.camunda.fox.demo.twitter
+
+import com.camunda.fox.demo.twitter.Tweet;
+
+rule "Jakob isn't allowed tweeting anymore"
+when
+	t : Tweet( email == "jakob.freund@camunda.com" )
+then
+	t.reject("Jakob isn't allowed tweeting anymore");
+end
+
+rule "John Doe must not be mentioned on Twitter"
+when
+	t : Tweet( content matches '.*(John Doe).*' )
+then
+	t.reject("Please don't tweet about Jon Doe, he complained about it");
+end

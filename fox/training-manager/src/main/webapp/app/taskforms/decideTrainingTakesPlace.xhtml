@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/WEB-INF/templates/template.xhtml">	
+	<ui:define name="content">
+
+	<f:metadata>
+		<f:viewParam name="taskId" />			
+		<f:event type="preRenderView" listener="#{businessProcess.startTask(taskId, true)}" />            
+   	</f:metadata>
+	
+	<h2>
+		#{task.name} 
+	</h2>
+	
+	Should the following training date take place?
+
+	<h:form>
+			
+		<table>
+				<tr>
+					<td>Start date:</td>
+					<td>
+						#{decideTrainingDateTakesPlace.trainingDate.startDate}
+					</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>End date:</td>
+					<td>
+						#{decideTrainingDateTakesPlace.trainingDate.endDate}
+					</td>
+					<td></td>
+				</tr>			
+				<tr>
+					<td>Location:</td>
+					<td>
+						#{decideTrainingDateTakesPlace.trainingDate.location}"
+					</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td style="font-weight: bold;">Training:</td>					
+					<td colspan="2">
+					
+						<h:commandLink action="#{decideTrainingDateTakesPlace.setShowTraining(true)}" value="Show" 
+							rendered="#{not decideTrainingDateTakesPlace.showTraining}">
+							<f:ajax render="@form" />
+						</h:commandLink>
+						<h:commandLink action="#{decideTrainingDateTakesPlace.setShowTraining(false)}" value="Hide" 
+							rendered="#{decideTrainingDateTakesPlace.showTraining}">
+							<f:ajax render="@form" />
+						</h:commandLink>
+							
+						<h:panelGroup id="training" rendered="#{decideTrainingDateTakesPlace.showTraining}">
+							<table>
+								<tr>
+									<td>Training:</td>
+									<td>#{decideTrainingDateTakesPlace.trainingDate.training.name}</td>									
+								</tr>
+								<tr>
+									<td>Description:</td>
+									<td>#{decideTrainingDateTakesPlace.trainingDate.training.description}</td>									
+								</tr>
+							</table>
+						</h:panelGroup>						
+					</td>
+				</tr>		
+				<tr>
+					<td style="font-weight: bold;">Registrations:</td>					
+					<td>
+					
+						<h:commandLink action="#{decideTrainingDateTakesPlace.setShowRegistrations(true)}" value="Show" 
+							rendered="#{not decideTrainingDateTakesPlace.showRegistrations}">
+							<f:ajax render="@form" />
+						</h:commandLink>
+						<h:commandLink action="#{decideTrainingDateTakesPlace.setShowRegistrations(false)}" value="Hide" 
+							rendered="#{decideTrainingDateTakesPlace.showRegistrations}">
+							<f:ajax render="@form" />
+						</h:commandLink>
+							
+						<h:panelGroup id="registrations" rendered="#{decideTrainingDateTakesPlace.showRegistrations}">
+							<h:dataTable value="#{decideTrainingDateTakesPlace.trainingDate.registrations}]" var="registration">
+								<h:column>	
+									<f:facet name="header">Attendee</f:facet>							
+									
+								</h:column>
+								<h:column>	
+									<f:facet name="header">Registration date</f:facet>							
+									
+								</h:column>																															
+							</h:dataTable>
+						</h:panelGroup>						
+					</td>
+				</tr>	
+				<tr>
+					<td style="font-weight: bold;">Should the training take place?</td>
+					<td>
+						<h:selectBooleanCheckbox value="#{processVariables['takesPlace']}" required="true" />				
+					</td>
+					<td><h:message for="takePlace"/></td>
+				</tr>								
+				<tr>
+					<td><h:commandButton action="#{businessProcess.completeTask(true)}" 
+							value="save" type="submit" />
+					</td>
+				</tr>
+		</table>
+	</h:form>
+
+	</ui:define>
+</ui:composition>

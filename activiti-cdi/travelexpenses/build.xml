@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="activiti-cdi-travelexpenses example" default="deploy">
+	<!-- I know that there is a maven plugin for this not sure why I'm not using it... -->
+	
+	<property file="build.properties" />
+
+	<property name="mvn.executable" value="mvn" />
+	<property name="jboss.profile" value="default" />
+
+
+	<property name="deploy.dir" value="${jboss.home}/server/${jboss.profile}/deploy/activiti-cdi-example-travelexpenses.war" />
+
+	<target name="deploy" depends="undeploy, build">
+		<copy todir="${deploy.dir}" overwrite="true">
+			<fileset dir="target/activiti-cdi-example-travelexpenses" />
+		</copy>
+	</target>
+	
+	<target name="build">
+		<exec executable="${mvn.executable}" dir="." failonerror="true">
+			<arg line="install -Dmaven.test.skip=true" />
+		</exec>
+	</target>
+
+	<target name="undeploy">
+		<delete dir="${deploy.dir}" failonerror="false" />
+	</target>
+
+</project>

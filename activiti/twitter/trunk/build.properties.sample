@@ -1,0 +1,2 @@
+# Defines the path to the lib directory of the Activiti Explorer installation.
+activiti.tomcat.lib = C:/Activiti/releases/activiti-5.8/apps/apache-tomcat-6.0.32/webapps/activiti-explorer/WEB-INF/lib

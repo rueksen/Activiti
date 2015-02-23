@@ -1,0 +1,32 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+
+<!-- interface -->
+
+<composite:interface>
+
+</composite:interface>
+
+<!-- implementation -->
+<composite:implementation>
+	<h:dataTable value="#{taskList.list}" var="v_task">		
+		<h:column>
+			<f:facet name="header">Task Name</f:facet>
+			#{v_task.name}
+		</h:column>
+		<h:column>
+			<f:facet name="header">Description</f:facet>
+			#{v_task.description}
+		</h:column>
+		<h:column>
+			<f:facet name="header">Action</f:facet>
+			<a href="#{taskList.getFormKey(v_task.id)}?taskId=#{v_task.id}">Complete</a>
+		</h:column>
+	</h:dataTable>
+</composite:implementation>
+
+
+</html>

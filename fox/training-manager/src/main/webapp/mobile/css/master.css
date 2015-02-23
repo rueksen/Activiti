@@ -1,0 +1,19 @@
+html {
+	width: 100%;
+	height: 100%;
+}
+
+body {
+	font-family: sans-serif, Verdana;
+	font-size: 0.9em;
+}
+
+a { 
+	text-decoration: none;
+	color: #039;
+}
+
+a:hover {
+	text-decoration: underline;
+	color: #AC0313;
+}
